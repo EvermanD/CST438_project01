@@ -29,6 +29,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cst338.cst438_p1.database.AppDatabase
+import com.cst338.cst438_p1.database.User
+import com.cst338.cst438_p1.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -126,7 +129,7 @@ fun SignupScreen(
 @Composable
 fun SignupScreenPreview() {
     AppTheme {
-        SignupScreen (
+        SignupScreen(
             onSignupComplete = { }
         )
     }

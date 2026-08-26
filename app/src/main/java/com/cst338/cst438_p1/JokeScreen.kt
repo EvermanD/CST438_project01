@@ -5,9 +5,12 @@ import androidx.compose.material3.*
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cst338.cst438_p1.api.RetrofitClient
+import com.cst338.cst438_p1.database.Favorite
+import com.cst338.cst438_p1.database.Joke
+import com.cst338.cst438_p1.database.dao.FavoriteDao
+import com.cst338.cst438_p1.database.dao.JokeDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

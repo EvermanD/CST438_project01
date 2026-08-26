@@ -1,4 +1,4 @@
-package com.cst338.cst438_p1
+package com.cst338.cst438_p1.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

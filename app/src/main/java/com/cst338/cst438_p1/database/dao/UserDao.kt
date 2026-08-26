@@ -1,9 +1,10 @@
-package com.cst338.cst438_p1
+package com.cst338.cst438_p1.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Insert
 import androidx.room.Delete
+import com.cst338.cst438_p1.database.User
 
 @Dao
 interface UserDao {

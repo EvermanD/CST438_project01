@@ -1,7 +1,6 @@
 package com.cst338.cst438_p1
 
 import android.content.Context
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -9,10 +8,12 @@ import androidx.compose.ui.test.performTextInput
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.cst338.cst438_p1.database.AppDatabase
+import com.cst338.cst438_p1.database.User
+import com.cst338.cst438_p1.database.dao.UserDao
+import com.cst338.cst438_p1.ui.theme.AppTheme
 import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertNotNull
 import junit.framework.TestCase.assertNull
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -67,7 +68,7 @@ class SignupScreenTest {
 
         composeTestRule.setContent {
             AppTheme {
-                SignupScreen(onSignupComplete = {  })
+                SignupScreen(onSignupComplete = { })
             }
         }
 

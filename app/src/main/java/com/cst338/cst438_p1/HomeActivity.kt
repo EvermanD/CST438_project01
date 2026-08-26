@@ -6,6 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
+import com.cst338.cst438_p1.database.AppDatabase
+import com.cst338.cst438_p1.database.User
+import com.cst338.cst438_p1.ui.theme.AppTheme
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 

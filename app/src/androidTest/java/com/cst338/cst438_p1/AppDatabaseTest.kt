@@ -4,6 +4,13 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.cst338.cst438_p1.database.AppDatabase
+import com.cst338.cst438_p1.database.Favorite
+import com.cst338.cst438_p1.database.Joke
+import com.cst338.cst438_p1.database.User
+import com.cst338.cst438_p1.database.dao.FavoriteDao
+import com.cst338.cst438_p1.database.dao.JokeDao
+import com.cst338.cst438_p1.database.dao.UserDao
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -50,23 +57,29 @@ AppDatabaseTest {
 
     @Test
     fun getJokeByUserIdTest() = runTest {
-        jokeDao.insert(Joke(
-            "h39UfibMJBd",
-            "Did you hear about the cheese who saved the world? It was Legend-dairy!"
-        ))
+        jokeDao.insert(
+            Joke(
+                "h39UfibMJBd",
+                "Did you hear about the cheese who saved the world? It was Legend-dairy!"
+            )
+        )
 
         favoriteDao.insert(Favorite(1, "h39UfibMJBd"))
 
         assertEquals("h39UfibMJBd", jokeDao.getJokeByUserId(1).get(0).jokeId)
 
-        jokeDao.insert(Joke(
-            "uszdNZ8MRCd",
-            "My new thesaurus is terrible. In fact, it's so bad, I'd say it's terrible."
-        ))
-        jokeDao.insert(Joke(
-            "lbU01DljGtc",
-            "I couldn't get a reservation at the library. They were completely booked."
-        ))
+        jokeDao.insert(
+            Joke(
+                "uszdNZ8MRCd",
+                "My new thesaurus is terrible. In fact, it's so bad, I'd say it's terrible."
+            )
+        )
+        jokeDao.insert(
+            Joke(
+                "lbU01DljGtc",
+                "I couldn't get a reservation at the library. They were completely booked."
+            )
+        )
 
         favoriteDao.insert(Favorite(1, "uszdNZ8MRCd"))
         favoriteDao.insert(Favorite(1, "lbU01DljGtc"))

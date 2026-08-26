@@ -1,9 +1,10 @@
-package com.cst338.cst438_p1
+package com.cst338.cst438_p1.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.cst338.cst438_p1.database.Favorite
 
 @Dao
 interface FavoriteDao {

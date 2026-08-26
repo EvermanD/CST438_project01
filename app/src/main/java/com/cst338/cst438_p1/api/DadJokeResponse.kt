@@ -1,4 +1,4 @@
-package com.cst338.cst438_p1
+package com.cst338.cst438_p1.api
 
 data class DadJokeResponse(
     val id: String,

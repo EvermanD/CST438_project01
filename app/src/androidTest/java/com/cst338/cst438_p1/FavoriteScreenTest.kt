@@ -2,7 +2,8 @@ package com.cst338.cst438_p1
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import org.junit.Assert.*
+import com.cst338.cst438_p1.database.Joke
+import com.cst338.cst438_p1.database.User
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

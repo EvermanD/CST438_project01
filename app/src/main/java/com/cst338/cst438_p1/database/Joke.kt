@@ -1,4 +1,4 @@
-package com.cst338.cst438_p1
+package com.cst338.cst438_p1.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

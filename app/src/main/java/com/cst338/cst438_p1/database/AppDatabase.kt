@@ -1,14 +1,16 @@
-package com.cst338.cst438_p1
+package com.cst338.cst438_p1.database
 
 import android.content.Context
 import androidx.room.Database
-import androidx.room.RoomDatabase
 import androidx.room.Room
+import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.cst338.cst438_p1.database.dao.FavoriteDao
+import com.cst338.cst438_p1.database.dao.JokeDao
+import com.cst338.cst438_p1.database.dao.UserDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
 
 @Database(entities = [User::class, Joke::class, Favorite::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
@@ -34,7 +36,8 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         private class Callback(
-            private val scope: CoroutineScope) : RoomDatabase.Callback() {
+            private val scope: CoroutineScope
+        ) : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 INSTANCE?.let { database ->
@@ -45,18 +48,24 @@ abstract class AppDatabase : RoomDatabase() {
 
                         userDao.insert(User(1, "User", "password"))
 
-                        jokeDao.insert(Joke(
-                            "h39UfibMJBd",
-                            "Did you hear about the cheese who saved the world? It was Legend-dairy!"
-                        ))
-                        jokeDao.insert(Joke(
-                            "uszdNZ8MRCd",
-                            "My new thesaurus is terrible. In fact, it's so bad, I'd say it's terrible."
-                        ))
-                        jokeDao.insert(Joke(
-                            "lbU01DljGtc",
-                            "I couldn't get a reservation at the library. They were completely booked."
-                        ))
+                        jokeDao.insert(
+                            Joke(
+                                "h39UfibMJBd",
+                                "Did you hear about the cheese who saved the world? It was Legend-dairy!"
+                            )
+                        )
+                        jokeDao.insert(
+                            Joke(
+                                "uszdNZ8MRCd",
+                                "My new thesaurus is terrible. In fact, it's so bad, I'd say it's terrible."
+                            )
+                        )
+                        jokeDao.insert(
+                            Joke(
+                                "lbU01DljGtc",
+                                "I couldn't get a reservation at the library. They were completely booked."
+                            )
+                        )
 
                         favoriteDao.insert(Favorite(1, "h39UfibMJBd"))
                         favoriteDao.insert(Favorite(1, "uszdNZ8MRCd"))
@@ -67,4 +76,3 @@ abstract class AppDatabase : RoomDatabase() {
             }
     }
 }
-

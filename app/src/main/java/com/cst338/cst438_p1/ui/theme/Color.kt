@@ -1,11 +1,12 @@
-package com.cst338.cst438_p1.ui.theme
+package com.cst338.cst438_p1
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val Background = Color(0xFFF7F7F7)
+val Button = Color(0xFFF5C542)
+val Bar = Color(0xFF4A90E2)
+val ButtonText = Color(0xFF1c1c1c)
+val Text = Color(0xFF1c1c1c)
+val BrandName = Color(0xFFe6e6e6)
+

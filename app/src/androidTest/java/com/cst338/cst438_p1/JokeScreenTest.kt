@@ -2,17 +2,18 @@ package com.cst338.cst438_p1
 
 import android.content.Context
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.cst338.cst438_p1.database.AppDatabase
+import com.cst338.cst438_p1.database.dao.FavoriteDao
+import com.cst338.cst438_p1.database.dao.JokeDao
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.runner.manipulation.Ordering
 
 @RunWith(AndroidJUnit4::class)
 class JokeScreenTest {

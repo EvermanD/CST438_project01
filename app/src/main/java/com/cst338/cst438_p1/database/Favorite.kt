@@ -1,8 +1,7 @@
-package com.cst338.cst438_p1
+package com.cst338.cst438_p1.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
 @Entity(tableName = "Favorite", primaryKeys = ["uid", "joke_id"])
 data class Favorite (
