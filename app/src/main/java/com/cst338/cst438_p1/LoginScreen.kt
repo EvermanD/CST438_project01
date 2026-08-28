@@ -98,7 +98,7 @@ fun LoginScreen() {
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("password") },
+                label = { Text("Password") },
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier
                     .height(60.dp)
@@ -160,12 +160,12 @@ fun LoginScreen() {
             ) {
                 Text("Sign up!")
             }
-            Button(onClick = {
-                val intent = Intent(context, HomeActivity::class.java)
-                context.startActivity(intent)
-            }) {
-                Text("Dev: Skip Login")
-            }
+//            Button(onClick = {
+//                val intent = Intent(context, HomeActivity::class.java)
+//                context.startActivity(intent)
+//            }) {
+//                Text("Dev: Skip Login")
+//            }
         }
     }
 }

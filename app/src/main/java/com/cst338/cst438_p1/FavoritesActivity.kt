@@ -6,23 +6,35 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,9 +46,11 @@ import androidx.lifecycle.lifecycleScope
 import com.cst338.cst438_p1.database.AppDatabase
 import com.cst338.cst438_p1.database.Joke
 import com.cst338.cst438_p1.database.User
+import com.cst338.cst438_p1.database.dao.FavoriteDao
+import com.cst338.cst438_p1.database.dao.JokeDao
 import com.cst338.cst438_p1.ui.theme.AppTheme
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class FavoritesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,12 +60,13 @@ class FavoritesActivity : ComponentActivity() {
         val db = AppDatabase.getDatabase(this, lifecycleScope)
         val userDao = db.userDao()
         val jokeDao = db.jokeDao()
+        val favoriteDao = db.favoriteDao()
 
         // val userIdKey = "CST438P1.UserId.Key"
         // val loggedInUserId = intent.getIntExtra(userIdKey, -1)
 
         var user: User
-        var favorites: List<Joke>
+        var jokes: List<Joke>
 
         val sessionManager = SessionManager(this)
 
@@ -68,11 +83,11 @@ class FavoritesActivity : ComponentActivity() {
 
             //val uid: Int = loggedInUserId
             user = userDao.getUserById(loggedInUserId)!! // !! ?
-            favorites = jokeDao.getJokeByUserId(loggedInUserId)
+            jokes = jokeDao.getJokeByUserId(loggedInUserId)
 
             setContent {
                 AppTheme {
-                    FavoriteScreen(user, favorites)
+                    FavoriteScreen(user, jokes, jokeDao, favoriteDao)
                 }
             }
         }
@@ -81,10 +96,14 @@ class FavoritesActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FavoriteScreen(user: User, favorites: List<Joke>) {
+fun FavoriteScreen(user: User, jokes: List<Joke>, jokeDao: JokeDao, favoriteDao: FavoriteDao) {
 
     val context = LocalContext.current
     val userIdKey = "CST438P1.UserId.Key"
+    val showDialog = remember { mutableStateOf(false) }
+    val selectedJoke = remember { mutableStateOf<String?>(null) }
+    val jokeList = remember { mutableStateOf(jokes) }
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -117,19 +136,21 @@ fun FavoriteScreen(user: User, favorites: List<Joke>) {
             horizontalAlignment = Alignment.CenterHorizontally,
             userScrollEnabled = true
         ) {
-            //TODO: a long click/tap on the items here should bring up an option to delete them.
-
-            for (i in favorites) {
+            for (i in jokeList.value) {
                 item {
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(8.dp),
+                            .padding(8.dp)
+                            .combinedClickable(
+                                onClick = { },
+                                onLongClick = {
+                                    showDialog.value = true
+                                    selectedJoke.value = i.jokeId
+                                }
+                            ),
                         border = BorderStroke(1.dp, color = Color.Black)
                     ) {
-                        //Not sure why, but the Box within a Box is the only way I could get this
-                        //to center the content AND also not have the text clip the rounded edges
-                        //of the Cards.
                         Box(
                             modifier = Modifier.fillMaxWidth(),
                             contentAlignment = Alignment.Center
@@ -151,21 +172,80 @@ fun FavoriteScreen(user: User, favorites: List<Joke>) {
             }
         }
     }
+
+    if (showDialog.value) {
+        BasicAlertDialog(
+            onDismissRequest = {
+                showDialog.value = false
+                selectedJoke.value = null
+            },
+        ) {
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                shape = MaterialTheme.shapes.large
+            ) {
+                Column(
+                    modifier = Modifier.padding(24.dp)
+                ) {
+                    Text("Delete joke?")
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    )
+                    {
+                        TextButton(
+                            onClick = {
+                                showDialog.value = false
+                                selectedJoke.value = null
+                            }
+                        ) {
+                            Text("Dismiss")
+                        }
+                        TextButton(
+                            onClick = {
+                                selectedJoke.value?.let { jokeId ->
+                                    scope.launch {
+                                        favoriteDao.deleteFavorite(
+                                            user.uid,
+                                            jokeId
+                                        )
+                                        val updatedJokes = jokeDao.getJokeByUserId(user.uid)
+                                        jokeList.value = updatedJokes
+                                    }
+                                }
+                                selectedJoke.value = null
+                                showDialog.value = false
+                            },
+                        ) {
+                            Text("Confirm")
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun FavoriteScreenPreview() {
-    AppTheme {
-        val jokes = listOf<Joke>(
-            Joke(
-                "uszdNZ8MRCd",
-                "My new thesaurus is terrible. In fact, it's so bad, I'd say it's terrible."
-            )
-        )
-        FavoriteScreen(
-            User(0, "User", "password"),
-            jokes
-        )
-    }
+//    AppTheme {
+//        val jokes = listOf<Joke>(
+//            Joke(
+//                "uszdNZ8MRCd",
+//                "My new thesaurus is terrible. In fact, it's so bad, I'd say it's terrible."
+//            ),
+//            Joke(
+//                "KeqOmOZDYDd",
+//                "Why is it so windy inside an arena? All those fans."
+//            )
+//        )
+//        FavoriteScreen(
+//            User(0, "User", "password"),
+//            jokes,
+//        )
+//    }
 }

@@ -13,4 +13,8 @@ interface FavoriteDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(favorite: Favorite): Long
+
+    @Query("DELETE FROM Favorite " +
+            "WHERE uid = :uid AND joke_id = :jokeId")
+    suspend fun deleteFavorite(uid: Int, jokeId: String)
 }
