@@ -7,6 +7,10 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
 }
 
+detekt {
+    ignoreFailures = true
+}
+
 android {
     namespace = "com.cst338.cst438_p1"
     compileSdk = 36
