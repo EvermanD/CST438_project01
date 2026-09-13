@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
     id("pmd")
+    id("io.gitlab.arturbosch.detekt")
 }
 
 android {
