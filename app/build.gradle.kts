@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
+    id("pmd")
 }
 
 android {
@@ -72,6 +73,34 @@ dependencies {
     kapt("androidx.room:room-compiler:2.8.4")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.0")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
+    pmd("net.sourceforge.pmd:pmd-kotlin:7.27.0")
+}
 
+pmd {
+    toolVersion = "7.27.0"
+    isIgnoreFailures = false
+}
 
+tasks.register<Pmd>("pmdCheck") {
+    description = "Runs PMD against Kotlin sources."
+    group = "verification"
+
+    source = fileTree("src/main/kotlin") {
+        include("**/*.kt")
+    }
+
+    ruleSetFiles = files(
+        project.file("config/pmd/ruleset.xml")
+    )
+    ruleSets = emptyList()
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        isConsoleOutput = true
+    }
+}
+
+tasks.named("check") {
+    dependsOn("pmdCheck")
 }
