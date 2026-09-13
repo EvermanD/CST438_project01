@@ -52,6 +52,7 @@ import com.cst338.cst438_p1.ui.theme.AppTheme
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 class FavoritesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,7 +95,10 @@ class FavoritesActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    androidx.compose.foundation.ExperimentalFoundationApi::class
+)
 @Composable
 fun FavoriteScreen(user: User, jokes: List<Joke>, jokeDao: JokeDao, favoriteDao: FavoriteDao) {
 
