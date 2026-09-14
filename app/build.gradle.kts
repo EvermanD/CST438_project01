@@ -8,7 +8,9 @@ plugins {
 }
 
 detekt {
+    toolVersion = "1.23.8"
     ignoreFailures = true
+    config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
 }
 
 android {
@@ -79,6 +81,9 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.0")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     pmd("net.sourceforge.pmd:pmd-kotlin:7.27.0")
+    detektPlugins(
+        "io.gitlab.arturbosch.detekt:detekt-formatting:1.23.8"
+    )
 }
 
 pmd {
